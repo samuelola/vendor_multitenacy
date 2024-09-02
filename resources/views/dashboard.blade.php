@@ -64,7 +64,6 @@
         <span class="badge badge-light bg-success badge-xs">
           @php
             $notify_count = [];
-            $users = \App\Models\User::all();
             foreach($users as $user){
                 foreach($user->unreadNotifications as $notification){
 
@@ -152,7 +151,7 @@
   <p><br/></p>
    
   @php
-    $users = \App\Models\User::all();
+    
     @endphp
     <table class="table table-striped">
        <thead>

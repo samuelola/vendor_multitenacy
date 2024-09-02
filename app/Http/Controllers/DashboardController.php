@@ -13,18 +13,27 @@ class DashboardController extends Controller
     public function dashboard(){
         $allprojects = Project::orderByDesc("id")->get();
         $alltasks = Task::orderByDesc("id")->get();
-        return view('dashboard',compact('allprojects','alltasks'));
+        
+        $users = cache()->remember('note',3,function(){
+            return User::orderByDesc("id")->get();
+        });
+        
+        
+        return view('dashboard',compact('allprojects','alltasks','users'));
     }
 
     public function markAsRead(){
-      
-       $users = User::all();
-        foreach($users as $user){
+       
+       $users = cache()->remember('mark_read',3,function(){
+          return User::all();
+           foreach($users as $user){
             foreach($user->unreadNotifications as $notification){
                 $notification->markAsRead();
                 }
             }
-
+       });
+       
+       
          return redirect()->back();   
     }
 

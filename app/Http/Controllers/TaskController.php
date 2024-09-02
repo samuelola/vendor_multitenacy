@@ -10,6 +10,7 @@ use App\Http\Requests\TaskRequest;
 use App\Services\TaskService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Exceptions\TaskNotFoundException;
+use App\Jobs\ProcessTask;
 
 class TaskController extends Controller
 {
@@ -20,7 +21,8 @@ class TaskController extends Controller
 
    public function storeTask(TaskRequest $request){
         $data = $request->validated();
-        Task::create($data);        
+        $task = Task::create($data);   
+        ProcessTask::dispatch($task);     
         return redirect()->route('dashboard');
    }
 

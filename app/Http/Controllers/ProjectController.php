@@ -23,7 +23,7 @@ class ProjectController extends Controller
         $project=Project::create($data);      
         // User::find(Auth::user()->id)->notify(new ProjectCreation($project->name)); 
         // event(new ProjectProccessed($project));
-        ProjectProccessed::dispatch($project,);
+        ProjectProccessed::dispatch($project);
         return redirect()->route('dashboard');
     }
     public function edit_project(Request $request,$id){
