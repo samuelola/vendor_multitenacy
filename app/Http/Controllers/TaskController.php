@@ -7,6 +7,9 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Project;
 use App\Models\Task;
 use App\Http\Requests\TaskRequest;
+use App\Services\TaskService;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Exceptions\TaskNotFoundException;
 
 class TaskController extends Controller
 {
@@ -21,8 +24,24 @@ class TaskController extends Controller
         return redirect()->route('dashboard');
    }
 
-   public function edit_task($id){
-        $get_task = Task::where('id',$id)->first();
+   public function edit_task($id,TaskService $taskService){
+        
+        try{
+          //$get_task = (new TaskService())->findByTaskId($id);
+          $get_task = $taskService->findByTaskId($id);
+        }
+
+           //laravel default exception
+     //    catch(ModelNotFoundException $exception){
+     //      return view('tasknotfound', ['error' => $exception->getMessage()]);
+     //    }
+
+        catch(TaskNotFoundException $exception){
+          return view('tasknotfound', ['error' => $exception->getMessage()]);
+        }
+
+        
+        
         return view('edit_task',compact('get_task'));
    }
 

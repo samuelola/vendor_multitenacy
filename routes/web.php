@@ -29,3 +29,6 @@ Route::get('/edit_task/{id}',[TaskController::class,'edit_task'])->name('edit_ta
 Route::put('/update_task/{id}',[TaskController::class,'update_task'])->name('update_task')->middleware('auth');
 Route::get('/delete_task/{id}',[TaskController::class,'delete_task'])->name('delete_task')->middleware('auth');
 
+Route::get('/mark-as-read', [DashboardController::class,'markAsRead'])->name('mark-as-read');
+Route::get('/delete_notification', [DashboardController::class,'deleteNotification'])->name('delete_notification');
+

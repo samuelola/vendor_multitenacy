@@ -53,19 +53,44 @@
                       @csrf
                     <div class="mb-3">
                         <label for="exampleInputEmail1" class="form-label">Name</label>
-                        <input type="text" name="name" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                        <input type="text" name="name" value="{{ old('name') }}" class="form-control @error('name') is-invalid
+            @enderror" id="exampleInputEmail1" aria-describedby="emailHelp">
+                      
+                      @error('name')
+                          <span class="invalid-feedback" role="alert">
+                              <strong>{{ $message }}</strong>
+                          </span>
+                      @enderror
                     </div>  
                     <div class="mb-3">
                         <label for="exampleInputEmail1" class="form-label">Email address</label>
-                        <input type="email" name="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                        <input type="email" name="email" value="{{ old('email') }}" class="form-control @error('email') is-invalid
+            @enderror" id="exampleInputEmail1" aria-describedby="emailHelp">
+                        @error('email')
+                          <span class="invalid-feedback" role="alert">
+                              <strong>{{ $message }}</strong>
+                          </span>
+                        @enderror
                     </div>    
                     <div class="mb-3">
                         <label for="exampleInputPassword1" class="form-label">Password</label>
-                        <input type="password" name="password" class="form-control" id="exampleInputPassword1">
+                        <input type="password" name="password" class="form-control @error('password') is-invalid
+            @enderror" id="exampleInputPassword1">
+                        @error('password')
+                          <span class="invalid-feedback" role="alert">
+                              <strong>{{ $message }}</strong>
+                          </span>
+                        @enderror
                     </div>
                     <div class="mb-3">
                         <label for="exampleInputPassword1" class="form-label">Confirm Password</label>
-                        <input name="password_confirmation" type="password" class="form-control" id="exampleInputPassword1">
+                        <input name="password_confirmation" type="password"  class="form-control @error('password_confirmation') is-invalid
+            @enderror" id="exampleInputPassword1">
+                        @error('password_confirmation')
+                          <span class="invalid-feedback" role="alert">
+                              <strong>{{ $message }}</strong>
+                          </span>
+                         @enderror
                     </div>
                     <button type="submit" class="btn btn-primary">Submit</button>
                     </form>

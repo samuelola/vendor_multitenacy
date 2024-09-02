@@ -58,7 +58,27 @@
   <div class="nav nav-tabs" id="nav-tab" role="tablist">
     <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Projects</button>
     <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Tasks</button>
-    
+    @if(Auth::user()->id == 1)
+        <button class="nav-link" id="nav-notification-tab" data-bs-toggle="tab" data-bs-target="#nav-notification" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Notifications
+
+        <span class="badge badge-light bg-success badge-xs">
+          @php
+            $notify_count = [];
+            $users = \App\Models\User::all();
+            foreach($users as $user){
+                foreach($user->unreadNotifications as $notification){
+
+                    $notify_count[] = $user->notification;
+                }
+            }
+            echo count($notify_count);
+          @endphp 
+          
+        
+          </span>
+        </button>
+    @endif
+   
   </div>
 </nav>
 <div class="tab-content" id="nav-tabContent">
@@ -119,6 +139,52 @@
                     
                 </tbody>
         </table>
+
+  </div>
+
+  <div class="tab-pane fade mt-4" id="nav-notification" role="tabpanel" aria-labelledby="nav-notification-tab" tabindex="0">
+        
+  <a class="btn btn-sm btn-info" href="{{route('mark-as-read')}}">Mark as Read</a> |
+
+  <a class="btn btn-sm btn-danger" href="{{route('delete_notification')}}">Delete Notifications</a>
+
+  
+  <p><br/></p>
+   
+  @php
+    $users = \App\Models\User::all();
+    @endphp
+    <table class="table table-striped">
+       <thead>
+           <tr>
+               <th>Notifications</th>
+           </tr>
+       </thead>
+       <tbody>
+
+          
+            @php
+               foreach($users as $user){
+                foreach($user->unreadNotifications as $notification){
+                    @endphp
+                    <tr>
+                      <td>
+                          @php
+                          echo "- ". trim(json_encode($notification->data['data']),'"');
+                          @endphp
+                      </td>
+                    </tr>
+                    @php
+                }
+            }
+            @endphp
+          
+       </tbody>
+
+    </table>
+     @php
+  @endphp  
+        
 
   </div>
   
