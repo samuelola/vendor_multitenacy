@@ -1,1 +1,1 @@
-This is a new 404 page
+page not found

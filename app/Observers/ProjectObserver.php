@@ -4,6 +4,7 @@ namespace App\Observers;
 
 use App\Models\Project;
 
+
 class ProjectObserver
 {
     /**
@@ -11,7 +12,7 @@ class ProjectObserver
      */
     public function created(Project $project): void
     {
-        //
+       
     }
 
     /**

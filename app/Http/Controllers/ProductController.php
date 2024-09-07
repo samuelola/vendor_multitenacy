@@ -5,11 +5,19 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Cache;
 
 class ProductController extends Controller
 {
     public function allproducts(){
-        $allproducts = Product::Paginate(10);
+
+       
+       $allproducts =   Cache::remember('products',60*60*24,function(){
+            return Product::Paginate(10);
+        });
+
+        // $allproducts = Product::Paginate(10);
+        
         return view('products',compact('allproducts'));
     }
 

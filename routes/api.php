@@ -6,10 +6,13 @@ use App\Http\Controllers\Api\ProductController;
 
 
 Route::group([
-    'middleware' => 'api',
-    'prefix' => 'auth'
+    'middleware' => 'api'
 ], function ($router) {
     // Route::post('/register', [AuthController::class, 'register']);
+    
 });
 
-Route::apiResource('products',ProductController::class);
+Route::apiResource('products',ProductController::class)->middleware('throttle:productLimit2');
+
+
+

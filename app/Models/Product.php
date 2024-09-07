@@ -16,4 +16,6 @@ class Product extends Model
 
          return ( new CurrencyService())->convert($this->price,'usd','eur');
     }
+
+    protected $date = ['created_at'];
 }

@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Exceptions\ProductException;
+use App\Http\Resources\ProductResource;
+use Illuminate\Support\Facades\Cache;
 
 
 
@@ -16,7 +18,13 @@ class ProductController extends Controller
      */
     public function index()
     {
-        return Product::all();
+        //using cache in api controller
+        return ProductResource::collection(Cache::remember('products',60*60*24,function(){
+           return Product::all();
+        }));
+       
+
+        //return ProductResource::collection(Product::all());
     }
 
     /**
