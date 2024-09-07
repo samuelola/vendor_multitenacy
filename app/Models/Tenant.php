@@ -11,6 +11,7 @@ class Tenant extends Model
 
     protected $fillable = ['name'];
 
+    // this is used in pivot table relationship
     public function users(){
 
         return $this->belongsToMany(User::class);

@@ -11,12 +11,20 @@ use App\Services\TaskService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Exceptions\TaskNotFoundException;
 use App\Jobs\ProcessTask;
+use Illuminate\Support\Facades\Gate;
+// use Illuminate\Auth\Access\Response;
 
 class TaskController extends Controller
 {
-   public function addTask(){
+   public function addTask(Task $task){
+        if(Gate::denies('create',$task)){
+            return abort(403,'forbidden for this action');
+           //return  Response::deny('You do not have permission for this');
+        };
         $allprojects = Project::orderByDesc("id")->get();
-        return view('addtask',compact('allprojects'));
+          return view('addtask',compact('allprojects'));
+        
+        
    }
 
    public function storeTask(TaskRequest $request){
@@ -47,9 +55,11 @@ class TaskController extends Controller
         return view('edit_task',compact('get_task'));
    }
 
-   public function delete_task($id){
-       
-          $get_task = task::where('id',$id)->first(); 
+   public function delete_task($id,Task $task){
+          if(Gate::denies('delete',$task)){
+            return abort(403,'forbidden for this action');
+          };
+          $get_task = Task::where('id',$id)->first(); 
           $get_task->delete();
           return redirect()->route('dashboard');
    }

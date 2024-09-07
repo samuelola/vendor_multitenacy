@@ -56,8 +56,15 @@ class User extends Authenticatable implements JWTSubject
         return [];
     }
 
+    // this is used in pivot table relationship
     public function tenants(){
 
         return $this->belongsToMany(Tenant::class);
+    }
+
+    //this is permission sinero
+
+    public function tasks(){
+        return $this->hasMany(Task::class);
     }
 }

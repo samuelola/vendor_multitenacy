@@ -12,10 +12,12 @@ use App\Events\ProjectProccessed;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Eloquent\RelationNotFoundException;
 
+
 class ProjectController extends Controller
 {
 
     public function addProject(Request $request){
+        
         return view('addproject');
     }
     public function storeProject(ProjectRequest $request){

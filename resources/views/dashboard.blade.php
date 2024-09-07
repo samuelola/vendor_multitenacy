@@ -82,7 +82,12 @@
 </nav>
 <div class="tab-content" id="nav-tabContent">
   <div class="tab-pane fade show active mt-4" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab" tabindex="0">
+         <!-- @can('project_create')
+            <a href="{{route('addproject')}}" class="btn btn-outline-primary " style="float:left">Add New Project</a>
+         @endcan -->
+
          <a href="{{route('addproject')}}" class="btn btn-outline-primary " style="float:left">Add New Project</a>
+         
         <table class="table table-striped">
             <thead>
                 <tr>
@@ -94,7 +99,7 @@
             </thead>
             <tbody>
 
-              @foreach($allprojects as $allproject)
+              @forelse($allprojects as $allproject)
                 <tr>
                 
                 <td>{{$allproject->name}}</td>
@@ -103,7 +108,16 @@
                 </td>
                 
                 </tr>
-               @endforeach 
+               @empty 
+                 <tr>
+                    <td>
+                          <p>No Project Available</p>
+                    </td>
+                    
+                 </tr>
+                  
+
+               @endforelse
                 
             </tbody>
         </table>
