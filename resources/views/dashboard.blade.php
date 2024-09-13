@@ -26,19 +26,24 @@
           <a class="nav-link" href="{{route('signupform')}}">Signup</a>
         </li>
         @else
-            <form method="post" action="{{route('logout')}}">
+            <!-- <form method="post" action="{{route('logout')}}">
               @csrf
                 <button type="submit" class="btn btn-outline-info">Logout</button>
-            </form>
+            </form> -->
 
             <li class="nav-item dropdown" style="float:right">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             {{Auth::user()->name}}
           </a>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#">Another action</a></li>
+            <li><a class="dropdown-item" href="{{route('product')}}">Product</a></li>
             <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#">Something else here</a></li>
+            <li>
+              <form method="post" action="{{route('logout')}}">
+              @csrf
+                <button type="submit" class="btn btn-outline-info">Logout</button>
+            </form>
+             </li>
           </ul>
         </li>
         @endguest

@@ -8,6 +8,9 @@ use App\Models\Product;
 use App\Exceptions\ProductException;
 use App\Http\Resources\ProductResource;
 use Illuminate\Support\Facades\Cache;
+use App\Http\Requests\StoreProductRequest;
+use App\Repositories\ProductRepository;
+use App\Service\PaymentFactory;
 
 
 
@@ -38,14 +41,19 @@ class ProductController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreProductRequest $request, ProductRepository $productRepository)
     {
-        $validated = $request->validate([
-           'name'=> 'required',
-           'price' => 'required'
-        ]);
-         Product::create($validated);
-         return response()->json('Product Created Successfully',200);
+        /**
+         * Volate Single responsibility principle but it is working
+         */
+        
+        //  $product_data = $request->validated();
+        //  Product::create($product_data);
+        /**
+         * Single responsibility principle
+         */
+        $productRepository->createProduct($request->validated());
+        return response()->json('Product Created Successfully',200);
     }
 
     /**
@@ -109,5 +117,31 @@ class ProductController extends Controller
     {
           $product->delete();
           return response()->json('Product Deleted Succesfully.');
+    }
+
+    
+    //demostrating open and closed principle (no modification to previous code just add new one) part 1 
+    public function pay(Request $request){
+
+        /**
+         * demostrating open and closed principle part 1 
+         * which will not work this way bcos code may break 
+         */
+        // $payment = new PaymentService();
+        // if($type === 'credit'){
+        //    $payment->payWithCreditCard();
+        // }elseif($type === 'paypal'){
+        //     $payment->payWithPaypal();
+        // }else{
+        //     $payment->payWithWireTransfer();
+        // }
+
+        /**
+         * demostrating open and closed principle part 1 
+         */
+        $paymentFactory = new PaymentFactory();
+        $payment = $paymentFactory->initializePayment($request->type);
+        $payment->paywith();
+        
     }
 }

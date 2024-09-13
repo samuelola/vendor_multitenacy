@@ -20,7 +20,7 @@ class ProductCaseObserver
      */
     public function updated(Product $product): void
     {
-        //
+        Cache::forget('products');
     }
 
     /**
@@ -28,7 +28,7 @@ class ProductCaseObserver
      */
     public function deleted(Product $product): void
     {
-        //
+         Cache::forget('products');
     }
 
     /**

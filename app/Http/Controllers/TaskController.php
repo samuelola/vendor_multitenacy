@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Exceptions\TaskNotFoundException;
 use App\Jobs\ProcessTask;
 use Illuminate\Support\Facades\Gate;
+use App\Repositories\TaskRepository;
 // use Illuminate\Auth\Access\Response;
 
 class TaskController extends Controller
@@ -27,9 +28,13 @@ class TaskController extends Controller
         
    }
 
-   public function storeTask(TaskRequest $request){
+   public function storeTask(TaskRequest $request,TaskRepository $taskRepository){
         $data = $request->validated();
-        $task = Task::create($data);   
+        //$task = Task::create($data); 
+        /**
+         * observing dependency Invertion principle
+         */
+        $task = $taskRepository->createTask($data);  
         ProcessTask::dispatch($task);     
         return redirect()->route('dashboard');
    }

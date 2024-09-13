@@ -10,8 +10,11 @@ class Product extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name','price'];
+    protected $fillable = ['name','price','product_image'];
 
+    /**
+     * Observing or using Single segeration principle
+     */
     public function getPriceEurAttribute(){
 
          return ( new CurrencyService())->convert($this->price,'usd','eur');

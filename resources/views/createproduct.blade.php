@@ -52,19 +52,40 @@
         <div class="row">
             <div class="col-md-12">
 
-                    <form method="post" action="{{route('product.store')}}">
+                    <form method="post" action="{{route('product.store')}}" enctype="multipart/form-data">
                        @csrf
                     <div class="mb-3">
                         <label for="exampleInputEmail1" class="form-label">Product Name</label>
-                        <input type="text" name="name" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-
+                        <input type="text" name="name" class="form-control @error('name') is-invalid
+            @enderror" id="exampleInputEmail1" aria-describedby="emailHelp">
+                      @error('name')
+                          <span class="invalid-feedback" role="alert">
+                              <strong>{{ $message }}</strong>
+                          </span>
+                      @enderror
                      </div> 
                      
                      <div class="mb-3">
                         <label for="exampleInputEmail1" class="form-label">Product Price</label>
-                        <input type="number" name="price" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-
+                        <input type="number" name="price" class="form-control @error('price') is-invalid
+            @enderror" id="exampleInputEmail1" aria-describedby="emailHelp">
+                      @error('price')
+                          <span class="invalid-feedback" role="alert">
+                              <strong>{{ $message }}</strong>
+                          </span>
+                      @enderror
                      </div> 
+                     <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Product Image</label>
+                        <input type="file" name="image" class="form-control @error('image') is-invalid
+            @enderror" id="exampleInputEmail1" aria-describedby="emailHelp">
+                        @error('image')
+                          <span class="invalid-feedback" role="alert">
+                              <strong>{{ $message }}</strong>
+                          </span>
+                      @enderror
+                     </div> 
+
                             
                     <button type="submit" class="btn btn-primary mt-4">Submit</button>
                  </form>
