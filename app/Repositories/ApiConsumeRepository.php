@@ -10,14 +10,12 @@ class ApiConsumeRepository implements ConsumeApiInterface {
     private $key;
     private $fields;
     public function __construct($url,$key=null,$fields=null){
-        
         $this->url = $url;
         $this->key = $key;
         $this->fields = $fields;
     }
 
     public function getApi(){
-        
         $curl = curl_init();
         curl_setopt_array($curl, array(
         CURLOPT_URL => $this->url,
@@ -39,7 +37,6 @@ class ApiConsumeRepository implements ConsumeApiInterface {
     }
 
     public function postApi(){
-
         $data_string = json_encode($this->fields);
         $curl = curl_init();
         curl_setopt_array($curl, array(
