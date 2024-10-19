@@ -52,7 +52,8 @@
                   <form method="post" action="{{route('signup')}}">
                       @csrf
                     <div class="mb-3">
-                        <label for="exampleInputEmail1" class="form-label">Name</label>
+                      
+                        <label for="name" class="form-label" >@lang('name.full_name')</label>
                         <input type="text" name="name" value="{{ old('name') }}" class="form-control @error('name') is-invalid
             @enderror" id="exampleInputEmail1" aria-describedby="emailHelp">
                       

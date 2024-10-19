@@ -44,6 +44,11 @@ class AuthController extends Controller
         {
              return redirect()->route('dashboard'); 
         }
+        
+        return back()->withErrors([
+            'general_error' => 'The provided credentials do not match our records.',
+        ]);
+        // return 'Unauthorised, Wrong Email or Password';
   
     }
 

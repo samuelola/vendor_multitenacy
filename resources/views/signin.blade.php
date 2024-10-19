@@ -48,13 +48,26 @@
         <div class="row">
               <div class="col-md-2"></div>
               <div class="col-md-8">
-                   <h2>Register</h2>
+                   <h2>Login</h2>
+                   
                   <form method="post" action="{{route('login')}}">
                        @csrf
+
                     <div class="mb-3">
-                        <label for="exampleInputEmail1" class="form-label">Email address</label>
+                        
+                        <input type="hidden"  class="form-control @error('general_error') is-invalid
+                        @enderror" id="exampleInputEmail1" aria-describedby="emailHelp">
+                     
+                      @error('general_error')
+                          <span class="invalid-feedback" role="alert">
+                              <strong>{{ $message }}</strong>
+                          </span>
+                      @enderror
+                    </div>   
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">@lang('name.email_address')</label>
                         <input type="email" name="email" class="form-control @error('email') is-invalid
-            @enderror" id="exampleInputEmail1" aria-describedby="emailHelp">
+                        @enderror" id="exampleInputEmail1" aria-describedby="emailHelp">
                      
                       @error('email')
                           <span class="invalid-feedback" role="alert">
