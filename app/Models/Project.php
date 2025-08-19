@@ -6,10 +6,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Traits\FilterByUser;
 // use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Project extends Model
 {
-    use HasFactory, FilterByUser;
+    use HasFactory, FilterByUser, SoftDeletes;
 
     protected $fillable = ['name','user_id'];
 

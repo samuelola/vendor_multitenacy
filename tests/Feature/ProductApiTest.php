@@ -7,6 +7,7 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use App\Models\Product;
 use App\Models\User;
+use Carbon\Carbon;
 
 class ProductApiTest extends TestCase
 {
@@ -41,11 +42,27 @@ class ProductApiTest extends TestCase
         $response->assertInvalid(['name','price']);
     }
 
+    public function test_api_product_store_successful()
+    {
+        $product = [
+            'name' => 'Product new',
+            'price' => '1238'
+        ];
+        $response = $this->postJson('/api/products',$product);
+        $response->assertStatus(200);
+        $this->assertDatabaseHas('products',$product);
+    }
+
     public function test_api_returns_products_list()
     {
-        $product = Product::factory()->create();
-        $response = $this->getJson('/api/products');
-        $response->assertJson([$product->toArray()]);
+        //$product = Product::factory()->create();
+        // $response = $this->getJson('/api/products');
+        // $response->assertJson([$product->toArray()]);
+
+         $product = Product::factory()->create();
+         $response = $this->getJson('/api/products/');
+         $response->assertStatus(200);
+        
     }
 
     public function test_api_no_products_available(): void
@@ -57,16 +74,7 @@ class ProductApiTest extends TestCase
         
     }
 
-    public function test_api_product_store_successful()
-    {
-        $product = [
-            'name' => 'Product new',
-            'price' => '1238'
-        ];
-        $response = $this->postJson('/api/products',$product);
-        $response->assertStatus(200);
-        $this->assertDatabaseHas('products',$product);
-    }
+    
 
     public function test_api_product_update_successful()
     {

@@ -16,7 +16,7 @@ Route::get('/', [AuthController::class,'signupForm'])->name('signupform');
 Route::post('/signup', [AuthController::class,'signup'])->name('signup');
 Route::get('/signin', [AuthController::class,'signinForm'])->name('signinform');
 Route::post('/signin', [AuthController::class,'signin'])->name('login');
-
+Route::get('/currency_exchange', [AuthController::class,'Currency'])->name('currency');
 
 Route::middleware('auth')->group(function (){
 Route::post('/logout', [AuthController::class,'logout'])->name('logout');    
@@ -27,7 +27,7 @@ Route::get('/addtask',[TaskController::class,'addTask'])->name('addtask');
 Route::post('/storetask',[TaskController::class,'storeTask'])->name('storetask');
 Route::get('/edit_project/{id}',[ProjectController::class,'edit_project'])->name('edit_project');
 Route::put('/update_project/{id}',[ProjectController::class,'update_project'])->name('update_project');
-Route::get('/delete_project/{id}',[ProjectController::class,'delete_project'])->name('delete_project');
+Route::delete('/delete_project/{id}',[ProjectController::class,'delete_project'])->name('delete_project');
 Route::get('/edit_task/{id}',[TaskController::class,'edit_task'])->name('edit_task');
 Route::put('/update_task/{id}',[TaskController::class,'update_task'])->name('update_task');
 Route::get('/delete_task/{id}',[TaskController::class,'delete_task'])->name('delete_task');
@@ -39,6 +39,10 @@ Route::post('/products/store', [ProductController::class,'store'])->name('produc
 Route::get('/products/{id}/edit', [ProductController::class,'edit'])->name('product.edit');
 Route::put('/update/products/{id}', [ProductController::class,'update'])->name('product.update');
 Route::delete('/delete/{product}', [ProductController::class,'delete'])->name('product.delete');
+
+Route::post('/restore_project/{id}',[ProjectController::class,'restore_project'])->name('restore_project');
+Route::post('/force_delete_project/{id}',[ProjectController::class,'force_delete_project'])->name('force_delete_project');
+
 });
 
 

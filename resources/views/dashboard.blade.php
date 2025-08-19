@@ -54,6 +54,8 @@
   </div>
 </nav>
     <div class="container mt-4">
+      @include('sweetalert::alert')
+
         <div class="row">
             <div class="col-md-12">
 
@@ -61,9 +63,11 @@
 
                 <nav>
   <div class="nav nav-tabs" id="nav-tab" role="tablist">
+    
     <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Projects</button>
     <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Tasks</button>
     @if(Auth::user()->id == 1)
+        <button class="nav-link" id="nav-deleted-tab" data-bs-toggle="tab" data-bs-target="#nav-deleted" type="button" role="tab" aria-controls="nav-deleted" aria-selected="false">All Deleted Project</button>
         <button class="nav-link" id="nav-notification-tab" data-bs-toggle="tab" data-bs-target="#nav-notification" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Notifications
 
         <span class="badge badge-light bg-success badge-xs">
@@ -91,6 +95,10 @@
             <a href="{{route('addproject')}}" class="btn btn-outline-primary " style="float:left">Add New Project</a>
          @endcan -->
 
+         <h6 class="mb-3">{{ucfirst($user->name)}} | {{$user->role->name}} | {{$user->email}}  </h6>
+         
+         
+
          <a href="{{route('addproject')}}" class="btn btn-outline-primary " style="float:left">Add New Project</a>
          
         <table class="table table-striped">
@@ -109,7 +117,13 @@
                 
                 <td>{{$allproject->name}}</td>
                 <td>
-                    <a class="btn btn-info btn-sm" href="{{route('edit_project',$allproject->id)}}">Edit</a> | <a class="btn btn-danger btn-sm" href="{{route('delete_project',$allproject->id)}}">Delete</a>
+                    <a class="btn btn-info btn-sm" href="{{route('edit_project',$allproject->id)}}">Edit</a> | 
+                    <form action="{{route('delete_project',$allproject->id)}}" method="post" class="d-inline">
+                      @csrf
+                      @method('DELETE')
+                      <button type="button" class="btn btn-sm btn-danger confirm_delete">Delete</button>
+                    </form>
+
                 </td>
                 
                 </tr>
@@ -208,6 +222,44 @@
   
 </div>
 
+
+<div class="tab-pane fade mt-4" id="nav-deleted" role="tabpanel" aria-labelledby="nav-deleted-tab" tabindex="0">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                    
+                    <th scope="col">Project Name</th>
+                    <th scope="col">Action</th>
+                    
+                    </tr>
+                </thead>
+                <tbody>
+                   @foreach($alldeleted_project as $value)
+                    <tr>
+                    
+                    <td>{{$value->name}}</td>
+                    <td>
+                        <form action="{{route('restore_project',$value->id)}}" method="post" class="d-inline">
+                          @csrf
+                        
+                          <button type="submit" class="btn btn-sm btn-outline-success confirm_restore">Restore</button>
+                        </form>
+                         | <form action="{{route('force_delete_project',$value->id)}}" method="post" class="d-inline">
+                          @csrf
+                        
+                          <button type="submit" class="btn btn-sm btn-outline-danger confirm_delete_restore">Trash</button>
+                        </form>
+                    </td>
+                    
+                    </tr>
+
+                  @endforeach  
+                    
+                    
+                </tbody>
+        </table>
+
+  </div>
        
                 
                         <!--endtask-->
@@ -217,5 +269,70 @@
         </div>
     </div>
       <script src="{{asset('js/bootstrap.bundle.min.js')}}"></script>
+      <script src="{{asset('js/jquery-3.3.1.min.js')}}"></script>
+      
+      <script>
+        
+        $('.confirm_delete').click(function(event){
+           event.preventDefault();
+           Swal.fire({
+              title: 'Are you sure you want to delete this record?',
+              text: "You won't be able to revert this!",
+              icon: "warning",
+              showCancelButton: true,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+              if (result.isConfirmed) {
+                $(this).parent('form').trigger('submit')
+                Swal.fire('Deleted Successfully', '', 'success')
+              } else if (result.isDenied) {
+                Swal.fire('Changes are not saved', '', 'info')
+              }});
+        });
+      </script>
+      <script>
+        $('.confirm_restore').click(function(event){
+           event.preventDefault();
+           Swal.fire({
+              title: 'Are you sure you want to restore this record?',
+              text: "Restore now!",
+              icon: "info",
+              showCancelButton: true,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Yes, restore it!'
+            }).then((result) => {
+              if (result.isConfirmed) {
+                $(this).parent('form').trigger('submit')
+                Swal.fire('Deleted Successfully', '', 'success')
+              } else if (result.isDenied) {
+                Swal.fire('Changes are not saved', '', 'info')
+              }});
+        });
+      </script>
+      <script>
+        
+        $('.confirm_delete_restore').click(function(event){
+           event.preventDefault();
+           Swal.fire({
+              title: 'Are you sure you want to delete this record completely ?',
+              text: "You won't be able to revert this!",
+              icon: "warning",
+              showCancelButton: true,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+              if (result.isConfirmed) {
+                $(this).parent('form').trigger('submit')
+                Swal.fire('Deleted Successfully', '', 'success')
+              } else if (result.isDenied) {
+                Swal.fire('Changes are not saved', '', 'info')
+              }});
+        });
+      </script>
+      
 </body>
 </html>

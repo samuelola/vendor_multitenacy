@@ -11,11 +11,13 @@ use App\Models\User;
 use App\Events\ProjectProccessed;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Eloquent\RelationNotFoundException;
+use RealRashid\SweetAlert\Facades\Alert;
+use App\Services\ProjectService;
+use App\Exceptions\ProjectNotFoundException;
 
 
 class ProjectController extends Controller
 {
-
     public function addProject(Request $request){
         
         return view('addproject');
@@ -26,28 +28,33 @@ class ProjectController extends Controller
         // User::find(Auth::user()->id)->notify(new ProjectCreation($project->name)); 
         // event(new ProjectProccessed($project));
         ProjectProccessed::dispatch($project);
+        Alert::success('Success', 'Project Created');
         return redirect()->route('dashboard');
     }
     public function edit_project(Request $request,$id){
 
          try{
+               
+         $get_project = (new ProjectService())->projectById($id);
              //$get_project = Project::where('id',$id)->first();
                //this trigger the error
-             $get_project = Project::where('id',$id)->firstOrFail();
+             //$get_project = Project::where('id',$id)->firstorFail();
              // An example of a fake model
-            //$get_project->load(['projects']);
+          //   $get_project->load(['projects']);
          }
-        //  catch(\Exception $exception){
-        //     dd(get_class($exception));
-        //     return view('notfound');
-        //  }
+         catch(\Exception $e){
+          //   dd(get_class($exception));
+            return view('notfound',['error'=>$e->getMessage()]);
+            //return view('notfound');
+            
+         }
 
-         catch(ModelNotFoundException $exception){
-            return view('notfound');
-         }
-         catch(RelationNotFoundException $exception){
-             return view('relationnotfound');
-         }
+     //     catch(ModelNotFoundException $exception){
+     //        return view('notfound');
+     //     }
+     //     catch(RelationNotFoundException $exception){
+     //         return view('relationnotfound');
+     //     }
          return view('edit_project',compact('get_project'));
     }
 
@@ -66,4 +73,18 @@ class ProjectController extends Controller
          $get_project->delete();
          return redirect()->route('dashboard');
     }
+
+    public function restore_project($id){
+         $get_project = Project::withTrashed()->find($id); 
+         $get_project->restore();
+         return redirect()->route('dashboard');
+    }
+
+    public function force_delete_project($id){
+         $get_project = Project::withTrashed()->find($id); 
+         $get_project->forceDelete();
+         return redirect()->route('dashboard');
+    }
+
+    
 }

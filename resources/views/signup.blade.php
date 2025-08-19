@@ -48,7 +48,7 @@
         <div class="row">
               <div class="col-md-2"></div>
               <div class="col-md-8">
-                   <h2>Register</h2>
+                   <h2>{{translatedText}}Register</h2>
                   <form method="post" action="{{route('signup')}}">
                       @csrf
                     <div class="mb-3">

@@ -11,12 +11,16 @@ use App\Http\Requests\SignupRequest;
 use App\Http\Requests\SigninRequest;
 // use App\Notifications\UserRegistration;
 use App\Events\RegistrationProcessed;
+use RealRashid\SweetAlert\Facades\Alert;
+use Stichoza\GoogleTranslate\GoogleTranslate;
+
 
 class AuthController extends Controller
 {
     public function signupForm(){
-
-        return view('signup');
+        $translator = new GoogleTranslate();
+        $translatedText = $translator->translate('Hello world!', 'en', 'fr');
+        return view('signup', compact('translatedText'));
     }
 
     public function signup(SignupRequest $request){
@@ -28,12 +32,12 @@ class AuthController extends Controller
         // event(new RegistrationProcessed($user));
         RegistrationProcessed::dispatch($user);
         Auth::login($user);
-  
+        Alert::toast('Welcome '.auth()->user()->name, 'success');
         return redirect()->route('dashboard');
     }
 
     public function signinForm(){
-
+        
         return view('signin');
     }
 
@@ -42,6 +46,8 @@ class AuthController extends Controller
         $credentials = $request->validated();
         if (Auth::attempt($credentials)) 
         {
+           //Alert::success('Success', 'Success Message');
+             Alert::toast('Welcome Back '.auth()->user()->name, 'success');
              return redirect()->route('dashboard'); 
         }
         
@@ -59,6 +65,32 @@ class AuthController extends Controller
         $request->session()->regenerateToken();
         return redirect()->route('signinform');
     }
+
+
+    // public function Currency(Request $request){
+          
+    //     $curl = curl_init();
+            
+    //         curl_setopt_array($curl, [
+    //         	CURLOPT_URL => "https://v6.exchangerate-api.com/v6/237ba73f34653024c1350395/latest/USD",
+    //         	CURLOPT_RETURNTRANSFER => true,
+    //         	CURLOPT_ENCODING => "",
+    //         	CURLOPT_MAXREDIRS => 10,
+    //         	CURLOPT_TIMEOUT => 30,
+    //         	CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+    //         	CURLOPT_CUSTOMREQUEST => "GET",
+    //         	CURLOPT_HTTPHEADER => [
+    //         		"Accept: application/com",
+    //         	],
+    //         ]);
+            
+    //         $response = curl_exec($curl);
+    //         $err = curl_error($curl);
+            
+    //         curl_close($curl);
+            
+    //         $result = json_decode($response);
+    // }
 
     
 }

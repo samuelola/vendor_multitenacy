@@ -22,6 +22,10 @@ class ProductController extends Controller
 
         // $allproducts = Product::Paginate(10);
         return view('products',compact('allproducts'));
+        
+        Product::chunk(100,function($products){
+            /** do somthing with the collection result */
+        });
     }
 
     public function create(){

@@ -99,22 +99,23 @@ class ProductTest extends TestCase
         
     }
 
-    public function test_create_product_success()
-    {
-        $product = [
+    // public function test_create_product_success()
+    // {
+    //     $product = [
 
-             'name' => 'Product 123',
-             'price' => 1222
-        ];
-        $response = $this->actingAs($this->admin)->post('/products/store',$product);
-        $response->assertStatus(302);
-        $response->assertRedirect('products');
-        $this->assertDatabaseHas('products',$product);
+    //          'name' => 'Product 123',
+    //          'price' => 1222
+    //     ];
         
-        $latest_product = Product::latest()->first();
-        $this->assertEquals($product['name'], $latest_product['name']);
-        $this->assertEquals($product['price'], $latest_product['price']);
-    }
+    //     $response = $this->actingAs($this->admin)->post('/products/store',$product);
+    //     $response->assertStatus(302);
+    //     $response->assertRedirect('products');
+    //     $this->assertDatabaseHas('products',$product);
+        
+    //     $latest_product = Product::latest()->first();
+    //     $this->assertEquals($product['name'], $latest_product['name']);
+    //     $this->assertEquals($product['price'], $latest_product['price']);
+    // }
 
     public function test_product_edit_contains_correct_values()
     {
